@@ -26,15 +26,45 @@ public class Student_controller {
     // get student opration by id
 
     @GetMapping("/get_student_by_id")
-    public Student getStudent(@RequestParam("id")Integer id)
+    public Student getStudentById(@RequestParam("id")Integer id)
     {
         return studentDB.get(id);  // return value in HashMap(Student)
     }
-//
+
+// get student by name
+    @GetMapping("/get_student_by_name")
+    public Student getStudentById(@RequestParam("name")String searchName)
+    {
+      // Itterate over HashMap , check values
+        for(Student s: studentDB.values())
+        {
+            if (s.name.equals(searchName))
+            {
+                return s;
+            }
+        }
+        // if not found
+           return null;
+    }
 
     // update student opration
+    @PutMapping("/update_student")
+    public String updateStudent(@RequestBody() Student upStudent)
+    {
+        int key = upStudent.id;
+        studentDB.put(key,upStudent);
+
+        return "update succesful";
+    }
+
 
     // delete student opration
+    @DeleteMapping("/delet_student")
+    public String deletStudent(@RequestParam("id")Integer deletId)
+    {
+        studentDB.remove(deletId);
+        return "student removed";
+    }
 
 
 }
